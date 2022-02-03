@@ -3,7 +3,7 @@ from sys import prefix
 from matplotlib.pyplot import step
 import streamlit as st
 
-pickle_in = open('modelo.pkl', 'rb')
+pickle_in = open('Jupyter/modelo.pkl', 'rb')
 classificador = pickle.load(pickle_in)
 
 @st.cache()
