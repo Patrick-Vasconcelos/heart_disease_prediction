@@ -846,9 +846,24 @@ function visualOp(op){ /* op: 'd'|'y'|'c' */
 }
 
 /* ============================ teclado ============================ */
+/* Em layouts ABNT2 / US-Internacional, " ' ~ ^ ` são "teclas mortas":
+   o navegador envia e.key === 'Dead'. Mapeamos pelo código físico. */
+function deadKeyChar(e){
+  var br=(navigator.language||'').toLowerCase().indexOf('pt')===0;
+  var map=br
+    ?{'Backquote':["'",'"'],'Quote':['~','^'],'BracketLeft':['´','`'],'Digit6':[null,'¨']}
+    :{'Quote':["'",'"'],'Backquote':['`','~'],'Digit6':[null,'^']};
+  var pair=map[e.code];
+  if(!pair)return null;
+  return e.shiftKey?pair[1]:pair[0];
+}
 document.addEventListener('keydown',function(e){
   if(!$('game').classList.contains('on'))return;
   var k=e.key;
+  if(k==='Dead'){
+    k=deadKeyChar(e);
+    if(!k){e.preventDefault();return;}
+  }
   if(k==='Shift'||k==='Control'||k==='Alt'||k==='Meta'||k==='CapsLock')return;
   if(done){
     if(k==='Enter'){
