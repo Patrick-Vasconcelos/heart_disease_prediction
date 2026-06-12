@@ -8,20 +8,36 @@
   :root{
     --bg:#1a1b26; --panel:#24283b; --panel2:#1f2335; --fg:#c0caf5;
     --dim:#565f89; --green:#9ece6a; --blue:#7aa2f7; --yellow:#e0af68;
-    --red:#f7768e; --purple:#bb9af7; --cyan:#7dcfff;
+    --red:#f7768e; --purple:#bb9af7; --cyan:#7dcfff; --sel:#33467c;
     --mono:'JetBrains Mono','Fira Code','Cascadia Code',Consolas,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--fg);font-family:var(--mono);min-height:100vh}
-  header{display:flex;align-items:center;gap:24px;padding:14px 24px;background:var(--panel2);border-bottom:1px solid #2f334d;flex-wrap:wrap}
+  header{display:flex;align-items:center;gap:18px;padding:14px 24px;background:var(--panel2);border-bottom:1px solid #2f334d;flex-wrap:wrap}
   header h1{font-size:20px;color:var(--green)}
-  #levels{display:flex;gap:6px;flex-wrap:wrap}
-  #levels button{width:34px;height:34px;border-radius:6px;border:1px solid #3b4261;background:var(--panel);color:var(--fg);font-family:var(--mono);cursor:pointer;font-size:13px}
-  #levels button:hover:not(:disabled){border-color:var(--blue)}
-  #levels button.active{background:var(--blue);color:#1a1b26;font-weight:bold}
-  #levels button.done{border-color:var(--green);color:var(--green)}
-  #levels button:disabled{opacity:.3;cursor:not-allowed}
-  main{display:flex;gap:20px;padding:20px 24px;align-items:flex-start;flex-wrap:wrap}
+  header .spacer{flex:1}
+  header .stars{color:var(--yellow);font-size:14px}
+  .hbtn{background:var(--panel);border:1px solid #3b4261;border-radius:6px;color:var(--fg);font-family:var(--mono);padding:7px 14px;cursor:pointer;font-size:13px}
+  .hbtn:hover{border-color:var(--blue)}
+  .hbtn.arena{border-color:var(--purple);color:var(--purple)}
+
+  /* ---- menu ---- */
+  #menu{max-width:980px;margin:0 auto;padding:28px 24px}
+  #menu .chapter{margin-bottom:30px}
+  #menu .chapter h2{font-size:16px;color:var(--purple);margin-bottom:4px}
+  #menu .chapter p.desc{color:var(--dim);font-size:13px;margin-bottom:14px}
+  .missions{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .mcard{background:var(--panel);border:1px solid #3b4261;border-radius:10px;padding:14px 16px;cursor:pointer;text-align:left;font-family:var(--mono);color:var(--fg)}
+  .mcard:hover:not(:disabled){border-color:var(--blue);transform:translateY(-2px)}
+  .mcard:disabled{opacity:.35;cursor:not-allowed}
+  .mcard .mname{font-size:14px;margin-bottom:6px}
+  .mcard .mstars{color:var(--yellow);font-size:13px}
+  .mcard .mcmds{color:var(--dim);font-size:12px;margin-top:6px}
+  #arenaCard{background:linear-gradient(135deg,#2a2440,#1f2335);border-color:var(--purple)}
+
+  /* ---- jogo ---- */
+  main{display:none;gap:20px;padding:20px 24px;align-items:flex-start;flex-wrap:wrap}
+  main.on{display:flex}
   #left{flex:1 1 560px;min-width:320px}
   #goal{background:var(--panel);border:1px solid #3b4261;border-left:4px solid var(--yellow);border-radius:6px;padding:12px 16px;margin-bottom:14px;font-size:14px;line-height:1.6}
   #goal b{color:var(--yellow)}
@@ -30,6 +46,7 @@
   .ln{display:flex;white-space:pre}
   .num{width:44px;text-align:right;padding-right:14px;color:var(--dim);user-select:none;flex-shrink:0;font-size:13px;line-height:inherit}
   .cell{display:inline-block;white-space:pre}
+  .sel{background:var(--sel);border-radius:2px}
   .cursor{background:var(--green);color:#1a1b26;border-radius:2px}
   .cursorbar{box-shadow:inset 2px 0 0 var(--green)}
   .gem{background:var(--yellow);color:#1a1b26;border-radius:3px;animation:pulse 1.1s infinite}
@@ -39,38 +56,51 @@
   #mode{font-weight:bold;padding:1px 10px;border-radius:4px;background:var(--blue);color:#16161e}
   #mode.insert{background:var(--green)}
   #mode.search{background:var(--purple)}
+  #mode.visual{background:var(--yellow)}
   #info{color:var(--dim)}
   #pending{margin-left:auto;color:var(--yellow)}
   #message{margin-top:12px;min-height:24px;font-size:14px;color:var(--cyan)}
   #right{flex:0 1 360px;min-width:300px;display:flex;flex-direction:column;gap:14px}
   #right h2{font-size:16px;color:var(--purple)}
-  #cmds{background:var(--panel);border:1px solid #3b4261;border-radius:8px;padding:14px 16px}
-  #cmds h3,#expectedWrap h3{font-size:13px;color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+  #taskdots{font-size:15px;letter-spacing:4px;color:var(--green)}
+  .pbox{background:var(--panel);border:1px solid #3b4261;border-radius:8px;padding:14px 16px}
+  .pbox h3{font-size:13px;color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
   .cmd{display:flex;gap:12px;margin-bottom:8px;font-size:14px;align-items:baseline}
   .cmd kbd{background:#16161e;border:1px solid #3b4261;border-bottom-width:3px;border-radius:5px;padding:1px 8px;color:var(--green);min-width:42px;text-align:center;flex-shrink:0}
-  .cmd span{color:var(--fg)}
-  #expectedWrap{background:var(--panel);border:1px solid #3b4261;border-radius:8px;padding:14px 16px;display:none}
+  #hintBox{border-left:4px solid var(--cyan)}
+  #hint{font-size:13px;line-height:1.6;color:var(--fg)}
+  #hint kbd,#goal kbd,#howto kbd{background:#16161e;border:1px solid #3b4261;border-radius:4px;padding:0 5px;color:var(--green)}
+  #expectedWrap{display:none}
   #expected{font-size:14px;line-height:1.55}
   #expected .ok{color:var(--green)}
   #expected .bad{color:var(--red)}
   #reset{background:var(--panel);border:1px solid #3b4261;border-radius:8px;color:var(--fg);font-family:var(--mono);padding:10px;cursor:pointer;font-size:14px}
   #reset:hover{border-color:var(--red);color:var(--red)}
   #howto{background:var(--panel);border:1px solid #3b4261;border-radius:8px;padding:14px 16px;font-size:13px;color:var(--dim);line-height:1.7}
-  #winOverlay{position:fixed;inset:0;background:rgba(13,14,22,.82);display:none;align-items:center;justify-content:center;z-index:10}
-  #winBox{background:var(--panel);border:1px solid var(--green);border-radius:12px;padding:36px 48px;text-align:center;max-width:420px}
-  #winBox h2{color:var(--green);font-size:24px;margin-bottom:12px}
-  #winBox p{margin-bottom:8px;font-size:15px}
-  #winBox .stats{color:var(--dim);font-size:14px;margin-bottom:20px}
-  #winBox button{font-family:var(--mono);font-size:15px;padding:10px 22px;border-radius:8px;cursor:pointer;margin:0 6px;border:1px solid #3b4261;background:var(--panel2);color:var(--fg)}
-  #winBox button.primary{background:var(--green);color:#16161e;border-color:var(--green);font-weight:bold}
+
+  /* ---- overlays ---- */
+  .overlay{position:fixed;inset:0;background:rgba(13,14,22,.85);display:none;align-items:center;justify-content:center;z-index:10}
+  .obox{background:var(--panel);border:1px solid var(--green);border-radius:12px;padding:36px 48px;text-align:center;max-width:460px}
+  .obox h2{color:var(--green);font-size:24px;margin-bottom:10px}
+  .obox .bigstars{font-size:30px;color:var(--yellow);margin-bottom:10px;letter-spacing:6px}
+  .obox p{margin-bottom:8px;font-size:15px}
+  .obox .stats{color:var(--dim);font-size:14px;margin-bottom:20px}
+  .obox button{font-family:var(--mono);font-size:15px;padding:10px 22px;border-radius:8px;cursor:pointer;margin:4px 6px;border:1px solid #3b4261;background:var(--panel2);color:var(--fg)}
+  .obox button.primary{background:var(--green);color:#16161e;border-color:var(--green);font-weight:bold}
 </style>
 </head>
 <body>
 <header>
   <h1>⌨️ Vim Quest</h1>
-  <div id="levels"></div>
+  <button class="hbtn" id="btnMenu">☰ Missões</button>
+  <button class="hbtn arena" id="btnArena">🏟️ Arena</button>
+  <span class="spacer"></span>
+  <span class="stars" id="totalStars"></span>
 </header>
-<main>
+
+<div id="menu"></div>
+
+<main id="game">
   <section id="left">
     <div id="goal"></div>
     <div id="editor">
@@ -81,29 +111,42 @@
   </section>
   <aside id="right">
     <h2 id="lvltitle"></h2>
-    <div id="cmds"></div>
-    <div id="expectedWrap"><h3>🎯 Texto objetivo</h3><pre id="expected"></pre></div>
-    <button id="reset">↻ Reiniciar nível</button>
+    <div id="taskdots"></div>
+    <div class="pbox" id="hintBox"><h3>💡 Dica do desafio</h3><div id="hint"></div></div>
+    <div class="pbox"><h3>Comandos da missão</h3><div id="cmds"></div></div>
+    <div class="pbox" id="expectedWrap"><h3>🎯 Texto objetivo</h3><pre id="expected"></pre></div>
+    <button id="reset">↻ Reiniciar missão</button>
     <div id="howto">
-      <b>Como jogar:</b> clique nesta página e use o teclado como no Neovim.
-      Nas fases de movimento, leve o cursor até cada 💎 (célula dourada).
-      Nas fases de edição, transforme o texto até ficar igual ao objetivo.
-      Errou? <kbd>u</kbd> desfaz (a partir da fase 9).
+      <b>Como jogar:</b> use o teclado como no Neovim. Fases de movimento: leve o
+      cursor a cada 💎. Fases de edição: deixe o texto igual ao objetivo.
+      <kbd>u</kbd> desfaz, <kbd>Ctrl</kbd>+<kbd>r</kbd> refaz.
+      Termine a missão com poucas teclas para ganhar até ⭐⭐⭐.
     </div>
   </aside>
 </main>
-<div id="winOverlay"><div id="winBox">
-  <h2 id="winTitle">✅ Fase completa!</h2>
+
+<div class="overlay" id="winOverlay"><div class="obox">
+  <h2 id="winTitle">✅ Missão completa!</h2>
+  <div class="bigstars" id="winStars"></div>
   <p id="winMsg"></p>
   <p class="stats" id="winStats"></p>
   <button id="btnReplay">↻ Repetir</button>
-  <button id="btnNext" class="primary">Próxima fase ⏎</button>
+  <button id="btnBackMenu">☰ Missões</button>
+  <button id="btnNext" class="primary">Próxima ⏎</button>
+</div></div>
+
+<div class="overlay" id="arenaOverlay"><div class="obox">
+  <h2>🏟️ Fim da Arena!</h2>
+  <p id="arenaMsg"></p>
+  <p class="stats" id="arenaStats"></p>
+  <button id="btnArenaMenu">☰ Missões</button>
+  <button id="btnArenaAgain" class="primary">Jogar de novo ⏎</button>
 </div></div>
 
 <script>
 'use strict';
-// ---------- helpers ----------
-function tokens(line){ // runs of non-space: [{s,e}] inclusive
+/* ============================ helpers ============================ */
+function tokens(line){
   var t=[],i=0;
   while(i<line.length){
     if(line[i]!==' '){var s=i;while(i<line.length&&line[i]!==' ')i++;t.push({s:s,e:i-1});}
@@ -112,205 +155,479 @@ function tokens(line){ // runs of non-space: [{s,e}] inclusive
   return t;
 }
 function allIndexes(str,ch){var r=[],i=str.indexOf(ch);while(i!==-1){r.push(i);i=str.indexOf(ch,i+1);}return r;}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function rnd(n){return Math.floor(Math.random()*n);}
+function $(id){return document.getElementById(id);}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function gemsAt(line,cols){return cols.map(function(c){return {r:0,c:c};});}
 
-// ---------- níveis ----------
-var LEVELS=[
- {name:'1 · Esquerda e Direita',par:75,allowEdit:false,
-  goal:'Bem-vindo(a)! No Vim você move o cursor sem tirar as mãos do teclado. Use <b>h</b> e <b>l</b> para coletar todas as 💎 desta linha.',
-  cmds:[['h','move para a esquerda'],['l','move para a direita']],
-  setup:function(){var s='colete todas as joias desta linha usando h e l';
-    return {lines:[s],cur:{r:0,c:22},gems:[{r:0,c:0},{r:0,c:8},{r:0,c:34},{r:0,c:s.length-1}]};}},
+/* ============================ conteúdo ============================ */
+/* task = função que retorna {hint, lines, cur, gems|expected, allowEdit} */
+var CHAPTERS=[
+{name:'Capítulo 1 · Movimento',desc:'Aprenda a voar pelo texto sem tocar no mouse.',missions:[
 
- {name:'2 · Cima e Baixo',par:10,allowEdit:false,
-  goal:'Agora o eixo vertical: <b>j</b> desce e <b>k</b> sobe. Colete as 💎 nas outras linhas.',
-  cmds:[['j','move para baixo'],['k','move para cima']],
-  setup:function(){return {lines:[
-    'primeira linha .','segunda linha ..','terceira linha .','quarta linha ...','quinta linha ...'],
-    cur:{r:2,c:0},gems:[{r:0,c:0},{r:4,c:0},{r:0,c:15},{r:4,c:15}]};}},
+{name:'1.1 Primeiros Passos',par:80,
+ intro:'No Vim o cursor se move com <b>h j k l</b> — mãos sempre na posição de digitação. Prefixe com um número para repetir: <kbd>5l</kbd> anda 5 colunas, <kbd>3j</kbd> desce 3 linhas.',
+ cmds:[['h j k l','← ↓ ↑ →'],['5l','repete o movimento 5x']],
+ tasks:[
+  function(){var s='colete todas as joias desta longa linha de treino';
+   return {hint:'Use <kbd>h</kbd> e <kbd>l</kbd> para alcançar cada 💎.',allowEdit:false,
+    lines:[s],cur:{r:0,c:24},gems:gemsAt(s,[0,9,38,s.length-1])};},
+  function(){return {hint:'Agora o eixo vertical: <kbd>j</kbd> desce, <kbd>k</kbd> sobe.',allowEdit:false,
+    lines:['primeira linha .','segunda linha ..','terceira linha .','quarta linha ...','quinta linha ...'],
+    cur:{r:2,c:0},gems:[{r:0,c:0},{r:4,c:0},{r:0,c:15},{r:4,c:15}]};},
+  function(){return {hint:'Combine os quatro. Experimente contagens: <kbd>4j</kbd>, <kbd>7l</kbd>…',allowEdit:false,
+    lines:['o vim parece dificil no comeco',
+           'mas cada comando vira memoria',
+           'muscular depois de praticar um',
+           'pouco todos os dias sem pressa',
+           'logo voce edita na velocidade',
+           'do pensamento sem usar o mouse'],
+    cur:{r:0,c:0},gems:[{r:1,c:9},{r:3,c:25},{r:5,c:3},{r:2,c:18},{r:4,c:28}]};},
+  function(){var s='salto longo: para chegar rapido aqui use contagem antes da tecla';
+   return {hint:'Desafio de eficiência: as 💎 estão longe — use <kbd>{n}l</kbd> e <kbd>{n}h</kbd>!',allowEdit:false,
+    lines:[s,s.replace(/./g,function(c,i){return c;})],cur:{r:0,c:0},
+    gems:[{r:0,c:33},{r:0,c:s.length-1},{r:1,c:13}]};}
+ ]},
 
- {name:'3 · Movimento Livre',par:40,allowEdit:false,
-  goal:'Combine <b>h j k l</b> para navegar em duas dimensões. Dica: você pode usar números antes do movimento, ex.: <b>3j</b> desce 3 linhas!',
-  cmds:[['hjkl','movimentos básicos'],['3j','repete o movimento 3x']],
-  setup:function(){return {lines:[
-    'o vim parece dificil no comeco',
-    'mas cada comando vira memoria',
-    'muscular depois de praticar um',
-    'pouco todos os dias sem pressa',
-    'logo voce edita na velocidade',
-    'do pensamento sem usar o mouse'],
-    cur:{r:0,c:0},gems:[{r:1,c:9},{r:3,c:25},{r:5,c:3},{r:2,c:18},{r:4,c:28}]};}},
+{name:'1.2 Palavras e Extremos',par:48,
+ intro:'Letra por letra é lento. <b>w</b>/<b>b</b> saltam entre inícios de palavras, <b>e</b> vai ao fim da palavra. <b>0</b> vai ao começo da linha, <b>^</b> ao primeiro caractere e <b>$</b> ao fim.',
+ cmds:[['w / b','próxima / anterior palavra'],['e','fim da palavra'],['0 ^ $','começo · 1º caractere · fim']],
+ tasks:[
+  function(){var s='salte rapidamente entre as palavras desta frase comprida';var t=tokens(s);
+   return {hint:'<kbd>w</kbd> avança para o início de cada palavra.',allowEdit:false,
+    lines:[s],cur:{r:0,c:0},gems:[{r:0,c:t[2].s},{r:0,c:t[4].s},{r:0,c:t[6].s}]};},
+  function(){var s='os fins das palavras tambem importam muito aqui';var t=tokens(s);
+   return {hint:'<kbd>e</kbd> pula para o fim da palavra; <kbd>b</kbd> volta.',allowEdit:false,
+    lines:[s],cur:{r:0,c:s.length-1},gems:[{r:0,c:t[5].e},{r:0,c:t[2].e},{r:0,c:t[0].s}]};},
+  function(){var a='zero leva ao comeco da linha';var b='cifrao leva direto ao final';
+   return {hint:'<kbd>0</kbd> e <kbd>$</kbd> + <kbd>j</kbd>/<kbd>k</kbd>.',allowEdit:false,
+    lines:[a,b],cur:{r:0,c:12},gems:[{r:0,c:0},{r:0,c:a.length-1},{r:1,c:0},{r:1,c:b.length-1}]};},
+  function(){var s='    linha indentada com espacos no inicio';
+   return {hint:'<kbd>0</kbd> vai à coluna zero, mas <kbd>^</kbd> vai ao primeiro caractere de verdade!',allowEdit:false,
+    lines:[s],cur:{r:0,c:20},gems:[{r:0,c:4},{r:0,c:s.length-1}]};}
+ ]},
 
- {name:'4 · Saltando Palavras',par:14,allowEdit:false,
-  goal:'Mover letra por letra é lento. <b>w</b> pula para o início da próxima palavra, <b>b</b> volta, <b>e</b> vai para o fim da palavra. Colete as 💎!',
-  cmds:[['w','início da próxima palavra'],['b','início da palavra anterior'],['e','fim da palavra']],
-  setup:function(){var s='salte rapidamente entre as palavras desta frase comprida';
-    var t=tokens(s);
-    return {lines:[s],cur:{r:0,c:0},gems:[
-      {r:0,c:t[2].s},{r:0,c:t[4].s},{r:0,c:t[6].s},{r:0,c:t[3].e},{r:0,c:t[7].e}]};}},
+{name:'1.3 Saltos e Caça',par:40,
+ intro:'<b>gg</b> vai à primeira linha, <b>G</b> à última, <b>{n}G</b> à linha n (veja os números!). Na linha, <b>f{c}</b> pula até o caractere c, <b>t{c}</b> para logo antes dele, <b>;</b> repete e <b>F</b>/<b>T</b> caçam para trás.',
+ cmds:[['gg / G','primeira / última linha'],['7G','linha 7'],['f{c} t{c}','até / antes do caractere'],['; F T','repete · versões para trás']],
+ tasks:[
+  function(){var ls=[];for(var i=1;i<=12;i++)ls.push('linha numero '+i);
+   return {hint:'<kbd>gg</kbd>, <kbd>G</kbd> e <kbd>7G</kbd> — sem apertar j!',allowEdit:false,
+    lines:ls,cur:{r:7,c:0},gems:[{r:0,c:0},{r:11,c:0},{r:6,c:0}]};},
+  function(){var s='o fogo da fogueira faz fumaca e fagulhas frias';
+   return {hint:'Todas as 💎 estão sobre <b>f</b>: use <kbd>ff</kbd> e repita com <kbd>;</kbd>.',allowEdit:false,
+    lines:[s],cur:{r:0,c:0},gems:allIndexes(s,'f').map(function(c){return {r:0,c:c};})};},
+  function(){var s='volte atras para capturar cada letra a desta frase';
+   var idx=allIndexes(s,'a');
+   return {hint:'Cursor no fim: cace para trás com <kbd>Fa</kbd> e <kbd>;</kbd>.',allowEdit:false,
+    lines:[s],cur:{r:0,c:s.length-1},gems:idx.slice(-4).map(function(c){return {r:0,c:c};})};},
+  function(){var s='um, dois, tres, quatro, cinco';
+   var idx=allIndexes(s,',');
+   return {hint:'<kbd>t,</kbd> para *antes* de cada vírgula; <kbd>;</kbd> repete o salto.',allowEdit:false,
+    lines:[s],cur:{r:0,c:0},gems:idx.map(function(c){return {r:0,c:c-1};})};}
+ ]},
 
- {name:'5 · Início e Fim da Linha',par:14,allowEdit:false,
-  goal:'<b>0</b> (zero) vai para o começo da linha e <b>$</b> para o fim. Combine com <b>j</b>/<b>k</b> para pegar as 💎 nas pontas.',
-  cmds:[['0','começo da linha'],['$','fim da linha'],['j / k','trocar de linha']],
-  setup:function(){var a='zero leva ao comeco da linha';
-    var b='cifrao leva direto ao final';
-    var c='treine os dois sem parar';
-    return {lines:[a,b,c],cur:{r:1,c:12},gems:[
-      {r:0,c:0},{r:0,c:a.length-1},{r:1,c:b.length-1},{r:2,c:0},{r:2,c:c.length-1}]};}},
+{name:'1.4 Radar de Busca',par:45,
+ intro:'Para saltos longos use a busca: <b>/texto</b> + <b>Enter</b> pula para a próxima ocorrência; <b>n</b> repete para frente e <b>N</b> para trás. Missão de revisão: combine com tudo que você já sabe!',
+ cmds:[['/texto ⏎','busca para frente'],['n / N','próxima / anterior'],['revisão','w e f $ gg G…']],
+ tasks:[
+  function(){var ls=['o vim muda como voce edita texto',
+                     'depois do vim nada mais parece rapido',
+                     'praticar um pouco por dia e o caminho',
+                     'no fim o vim vira segunda natureza'];
+   var gs=[];ls.forEach(function(l,r){var i=l.indexOf('vim');if(i!==-1)gs.push({r:r,c:i});});
+   return {hint:'Digite <kbd>/vim</kbd> + <kbd>Enter</kbd> e repita com <kbd>n</kbd>.',allowEdit:false,
+    lines:ls,cur:{r:0,c:0},gems:gs};},
+  function(){var ls=['function calcular(total) {',
+                     '  const imposto = total * 0.2;',
+                     '  return total + imposto;',
+                     '}'];
+   return {hint:'Use o que for mais curto: busca, <kbd>f</kbd>, <kbd>$</kbd>, <kbd>w</kbd>…',allowEdit:false,
+    lines:ls,cur:{r:0,c:0},gems:[{r:1,c:8},{r:2,c:ls[2].length-1},{r:3,c:0},{r:0,c:9}]};},
+  function(){var ls=['a maratona final deste capitulo',
+                     'mistura todos os movimentos',
+                     'que voce aprendeu ate aqui',
+                     'mostre eficiencia e ganhe',
+                     'as tres estrelas da missao'];
+   return {hint:'Maratona! Menos teclas = mais ⭐.',allowEdit:false,
+    lines:ls,cur:{r:2,c:10},gems:[{r:0,c:2},{r:4,c:ls[4].length-1},{r:1,c:9},{r:3,c:0},{r:4,c:9}]};}
+ ]}
+]},
 
- {name:'6 · Voando pelo Arquivo',par:8,allowEdit:false,
-  goal:'Para arquivos grandes: <b>gg</b> vai para a primeira linha, <b>G</b> para a última e <b>{número}G</b> para uma linha específica (veja os números à esquerda!).',
-  cmds:[['gg','primeira linha'],['G','última linha'],['6G','vai para a linha 6']],
-  setup:function(){var ls=[];for(var i=1;i<=12;i++)ls.push('linha numero '+i+(i===1?'  <- gg':(i===12?' <- G':(i===6?'  <- 6G':''))));
-    return {lines:ls,cur:{r:7,c:0},gems:[{r:0,c:0},{r:11,c:0},{r:5,c:0}]};}},
+{name:'Capítulo 2 · Edição',desc:'Apagar, trocar, inserir, copiar — o texto obedece.',missions:[
 
- {name:'7 · Caça ao Caractere',par:9,allowEdit:false,
-  goal:'<b>f</b> + caractere salta para a próxima ocorrência dele na linha; <b>;</b> repete o salto; <b>F</b> busca para trás. Todas as 💎 estão sobre a letra <b>f</b> — use <b>ff</b> e depois <b>;</b>!',
-  cmds:[['f{c}','pula até o caractere {c}'],[';','repete o último f'],['F{c}','igual, mas para trás']],
-  setup:function(){var s='o fogo da fogueira faz fumaca e fagulhas frias';
-    var gs=allIndexes(s,'f').map(function(c){return {r:0,c:c};});
-    return {lines:[s],cur:{r:0,c:0},gems:gs};}},
+{name:'2.1 Cirurgia de Precisão',par:42,
+ intro:'Edições de um caractere: <b>x</b> apaga sob o cursor, <b>r{c}</b> substitui pelo caractere c (sem entrar no modo de inserção!) e <b>~</b> alterna maiúscula/minúscula.',
+ cmds:[['x','apaga o caractere'],['r{c}','substitui por {c}'],['~','alterna a caixa'],['u','desfazer']],
+ tasks:[
+  function(){return {hint:'Letras duplicadas! Posicione e <kbd>x</kbd>.',allowEdit:true,
+    lines:['o ggato subiu nno telhado'],cur:{r:0,c:0},
+    expected:['o gato subiu no telhado']};},
+  function(){return {hint:'Não apague e redigite: <kbd>r</kbd> + a letra certa resolve em 2 teclas.',allowEdit:true,
+    lines:['a casa amarela tem porta vermelka','o sol nasceu redomdo hoje'],cur:{r:0,c:0},
+    expected:['a casa amarela tem porta vermelha','o sol nasceu redondo hoje']};},
+  function(){return {hint:'<kbd>~</kbd> alterna a caixa e já avança o cursor: segure o ritmo!',allowEdit:true,
+    lines:['grite a palavra: vim'],cur:{r:0,c:0},
+    expected:['grite a palavra: VIM']};}
+ ]},
 
- {name:'8 · Busca com /',par:10,allowEdit:false,
-  goal:'Para saltar longe, use a busca: digite <b>/bug</b> e <b>Enter</b> para ir até a próxima ocorrência de "bug"; <b>n</b> repete a busca. Capture todos os bugs! 🐛',
-  cmds:[['/texto ⏎','busca "texto" para frente'],['n','próxima ocorrência']],
-  setup:function(){var ls=[
-    'o codigo tem um bug escondido aqui',
-    'as vezes o bug so aparece de noite',
-    'depurar exige paciencia e cafe',
-    'mas o ultimo bug sempre se entrega'];
-    var gs=[];ls.forEach(function(l,r){var i=l.indexOf('bug');if(i!==-1)gs.push({r:r,c:i});});
-    return {lines:ls,cur:{r:0,c:0},gems:gs};}},
+{name:'2.2 O Operador d',par:40,
+ intro:'<b>d</b> é um operador: combine com um movimento. <b>dw</b> apaga uma palavra, <b>D</b> apaga até o fim da linha, <b>dd</b> apaga a linha (e <b>2dd</b>, duas!). <b>J</b> junta a linha de baixo nesta.',
+ cmds:[['dw','apaga até a próxima palavra'],['D','apaga até o fim da linha'],['dd / 2dd','apaga linha(s)'],['J','junta com a linha de baixo']],
+ tasks:[
+  function(){return {hint:'Palavras duplicadas: <kbd>dw</kbd> em cada uma.',allowEdit:true,
+    lines:['o o gato subiu no no telhado'],cur:{r:0,c:0},
+    expected:['o gato subiu no telhado']};},
+  function(){return {hint:'Vá ao espaço depois de "inicio" (ex.: <kbd>3e</kbd> <kbd>l</kbd>) e <kbd>D</kbd>.',allowEdit:true,
+    lines:['mantenha este inicio APAGUE TUDO DAQUI EM DIANTE','linha limpa sem lixo'],cur:{r:0,c:0},
+    expected:['mantenha este inicio','linha limpa sem lixo']};},
+  function(){return {hint:'<kbd>dd</kbd> apaga uma linha; <kbd>2dd</kbd> apaga duas de uma vez.',allowEdit:true,
+    lines:['fique com esta linha','LIXO numero um','LIXO numero dois','e com esta tambem'],cur:{r:1,c:0},
+    expected:['fique com esta linha','e com esta tambem']};},
+  function(){return {hint:'<kbd>J</kbd> junta as linhas com um espaço. Duas vezes resolve.',allowEdit:true,
+    lines:['esta frase foi','quebrada em tres','pedacos'],cur:{r:0,c:0},
+    expected:['esta frase foi quebrada em tres pedacos']};}
+ ]},
 
- {name:'9 · Exterminando Texto',par:30,allowEdit:true,
-  goal:'Agora vamos <b>editar</b>! Deixe o texto igual ao objetivo ao lado: <b>x</b> apaga o caractere sob o cursor, <b>dw</b> apaga uma palavra, <b>dd</b> apaga a linha inteira.',
-  cmds:[['x','apaga um caractere'],['dw','apaga até a próxima palavra'],['dd','apaga a linha'],['u','desfazer']],
-  setup:function(){return {lines:[
-    'o coddigo esta com defeito',
-    'APAGUE ESTA LINHA INTEIRA',
-    'remova lixo as palavras lixo extras'],
-    cur:{r:0,c:0},
-    expected:['o codigo esta com defeito','remova as palavras extras']};}},
+{name:'2.3 Inserção Total',par:95,
+ intro:'Seis portas para o modo de inserção: <b>i</b> antes do cursor, <b>a</b> depois, <b>I</b> no começo da linha, <b>A</b> no fim, <b>o</b> abre linha abaixo, <b>O</b> acima. <b>Esc</b> sempre volta ao normal.',
+ cmds:[['i / a','insere antes / depois'],['I / A','começo / fim da linha'],['o / O','nova linha abaixo / acima'],['Esc','volta ao modo normal']],
+ tasks:[
+  function(){return {hint:'Posicione em "rapido" e use <kbd>i</kbd> para inserir "muito ".',allowEdit:true,
+    lines:['neovim e rapido'],cur:{r:0,c:0},
+    expected:['neovim e muito rapido']};},
+  function(){return {hint:'<kbd>I</kbd> e <kbd>A</kbd> editam as pontas sem você navegar até lá.',allowEdit:true,
+    lines:['comentario importante'],cur:{r:0,c:8},
+    expected:['// comentario importante;']};},
+  function(){return {hint:'<kbd>O</kbd> abre linha acima, <kbd>o</kbd> abaixo — e já entram inserindo.',allowEdit:true,
+    lines:['meio'],cur:{r:0,c:0},
+    expected:['topo','meio','fundo']};}
+ ]},
 
- {name:'10 · Modo de Inserção',par:60,allowEdit:true,
-  goal:'Hora de escrever: <b>i</b> insere antes do cursor, <b>a</b> depois, <b>A</b> no fim da linha, <b>o</b> cria uma linha abaixo. <b>Esc</b> volta ao modo normal. Reproduza o objetivo!',
-  cmds:[['i','inserir antes do cursor'],['a','inserir depois'],['A','inserir no fim da linha'],['o','nova linha abaixo'],['Esc','voltar ao modo normal']],
-  setup:function(){return {lines:[
-    'neovim e demais',
-    'falta algo no fim desta linha'],
-    cur:{r:0,c:0},
-    expected:['neovim e muito demais','falta algo no fim desta linha!','esta linha foi criada com o']};}},
+{name:'2.4 Change & Undo',par:55,
+ intro:'<b>c</b> = delete + inserir. <b>cw</b> troca do cursor ao fim da palavra; <b>ciw</b> troca a palavra inteira <i>de qualquer posição dentro dela</i>. Errou? <b>u</b> desfaz, <b>Ctrl+r</b> refaz.',
+ cmds:[['cw','troca até o fim da palavra'],['ciw','troca a palavra inteira'],['u / Ctrl+r','desfaz / refaz']],
+ tasks:[
+  function(){return {hint:'Navegue até "verde" e <kbd>cw</kbd> → digite a cor certa.',allowEdit:true,
+    lines:['o ceu esta verde hoje'],cur:{r:0,c:0},
+    expected:['o ceu esta azul hoje']};},
+  function(){return {hint:'Caia no MEIO de "cafe" (ex.: <kbd>/af</kbd>) e veja o <kbd>ciw</kbd> brilhar.',allowEdit:true,
+    lines:['prefiro cafe quente de manha'],cur:{r:0,c:0},
+    expected:['prefiro cha quente de manha']};},
+  function(){return {hint:'Apague "quarenta e dois" com <kbd>D</kbd> e anexe com <kbd>A</kbd>.',allowEdit:true,
+    lines:['a resposta certa e quarenta e dois'],cur:{r:0,c:0},
+    expected:['a resposta certa e 42']};}
+ ]},
 
- {name:'11 · Copiar, Colar e Mover',par:14,allowEdit:true,
-  goal:'<b>yy</b> copia a linha, <b>p</b> cola abaixo do cursor. E <b>dd</b> + <b>p</b> recorta e cola — é assim que se move uma linha! Monte o texto objetivo.',
-  cmds:[['yy','copia a linha'],['p','cola abaixo'],['dd','recorta a linha'],['u','desfazer']],
-  setup:function(){return {lines:[
-    'esta linha deve ser duplicada',
-    'esta linha deve ir para o final',
-    'esta linha fica no meio'],
-    cur:{r:0,c:0},
-    expected:[
-    'esta linha deve ser duplicada',
-    'esta linha deve ser duplicada',
-    'esta linha fica no meio',
-    'esta linha deve ir para o final']};}},
+{name:'2.5 Copiar & Colar',par:32,
+ intro:'<b>yy</b> copia a linha, <b>p</b> cola abaixo, <b>P</b> acima/antes. Tudo que <b>d</b> e <b>x</b> apagam também vai para o registrador — <b>dd</b> + <b>p</b> é o recortar/colar do Vim. <b>yw</b> copia uma palavra.',
+ cmds:[['yy','copia a linha'],['p / P','cola depois / antes'],['dd + p','move uma linha'],['yw','copia a palavra']],
+ tasks:[
+  function(){return {hint:'<kbd>yy</kbd> + <kbd>p</kbd>: dobradinha clássica.',allowEdit:true,
+    lines:['linha unica importante'],cur:{r:0,c:0},
+    expected:['linha unica importante','linha unica importante']};},
+  function(){return {hint:'Linhas fora de ordem: <kbd>dd</kbd> a primeira e <kbd>p</kbd> no lugar certo.',allowEdit:true,
+    lines:['b vem depois','a vem primeiro'],cur:{r:0,c:0},
+    expected:['a vem primeiro','b vem depois']};},
+  function(){return {hint:'Em "muito": <kbd>yw</kbd> copia a palavra (com o espaço) e <kbd>P</kbd> cola antes.',allowEdit:true,
+    lines:['muito bom'],cur:{r:0,c:0},
+    expected:['muito muito bom']};}
+ ]}
+]},
 
- {name:'12 · Desafio Final',par:50,allowEdit:true,
-  goal:'O golpe de mestre: <b>ciw</b> apaga a palavra sob o cursor (em qualquer posição dela!) e já entra no modo de inserção. Use tudo o que aprendeu para corrigir a função. 🏆',
-  cmds:[['ciw','troca a palavra sob o cursor'],['dd','apaga a linha'],['todos','os comandos anteriores!']],
-  setup:function(){return {lines:[
-    'funcao quebrada() {',
-    '  retorna "errado"',
-    '  // comentario inutil',
-    '}'],
-    cur:{r:0,c:0},
-    expected:[
-    'funcao corrigida() {',
-    '  retorna "certo"',
-    '}']};}}
+{name:'Capítulo 3 · Avançado',desc:'Text objects, modo visual e o desafio do mestre.',missions:[
+
+{name:'3.1 Text Objects',par:65,
+ intro:'O superpoder do Vim: <b>ci"</b> troca o conteúdo das aspas, <b>ci(</b> dos parênteses, <b>ci{</b> das chaves, <b>ci[</b> dos colchetes — de qualquer lugar dentro deles. <b>di</b> apaga sem inserir.',
+ cmds:[['ci"','troca dentro das aspas'],['ci( ci{ ci[','troca dentro do par'],['di…','só apaga, sem inserir']],
+ tasks:[
+  function(){return {hint:'<kbd>ci"</kbd> encontra as aspas sozinho — nem precisa entrar nelas.',allowEdit:true,
+    lines:['cor = "vermelho"'],cur:{r:0,c:0},
+    expected:['cor = "azul"']};},
+  function(){return {hint:'Entre nos parênteses (<kbd>f(</kbd>) e <kbd>ci(</kbd>.',allowEdit:true,
+    lines:['soma(2, 3, 4)'],cur:{r:0,c:0},
+    expected:['soma(10)']};},
+  function(){return {hint:'<kbd>f{</kbd> e <kbd>ci{</kbd> trocam o corpo do bloco.',allowEdit:true,
+    lines:['function() {velho}'],cur:{r:0,c:0},
+    expected:['function() {novo}']};},
+  function(){return {hint:'Dois alvos: as aspas e os colchetes (<kbd>ci[</kbd>).',allowEdit:true,
+    lines:['msg = "ola mundo"; lista = [1, 2]'],cur:{r:0,c:0},
+    expected:['msg = "tchau"; lista = [99]']};}
+ ]},
+
+{name:'3.2 Modo Visual',par:30,
+ intro:'<b>v</b> inicia uma seleção por caractere, <b>V</b> por linha inteira. Estique com qualquer movimento e finalize com <b>d</b> (apagar), <b>y</b> (copiar) ou <b>c</b> (trocar). <b>Esc</b> cancela.',
+ cmds:[['v / V','visual por caractere / linha'],['d y c','apaga · copia · troca a seleção'],['Esc','cancela a seleção']],
+ tasks:[
+  function(){return {hint:'Na linha 2: <kbd>V</kbd> <kbd>j</kbd> <kbd>d</kbd> apaga o bloco selecionado.',allowEdit:true,
+    lines:['cabecalho fica','RASCUNHO apague','RASCUNHO apague tambem','rodape fica'],cur:{r:0,c:0},
+    expected:['cabecalho fica','rodape fica']};},
+  function(){return {hint:'<kbd>V</kbd> <kbd>y</kbd> <kbd>p</kbd>: selecionar, copiar, colar.',allowEdit:true,
+    lines:['refrao da musica','verso diferente'],cur:{r:0,c:0},
+    expected:['refrao da musica','refrao da musica','verso diferente']};},
+  function(){return {hint:'<kbd>fA</kbd>, <kbd>v</kbd>, estique com <kbd>e</kbd>/<kbd>l</kbd> até o espaço e <kbd>d</kbd>.',allowEdit:true,
+    lines:['apague APENAS ISTO daqui'],cur:{r:0,c:0},
+    expected:['apague daqui']};}
+ ]},
+
+{name:'3.3 Desafio do Mestre',par:95,
+ intro:'A prova final: três refatorações reais usando <b>tudo</b> — movimentos, operadores, text objects e modo visual. Boa sorte! 🏆',
+ cmds:[['tudo','todos os comandos do jogo'],['u','desfazer é seu amigo']],
+ tasks:[
+  function(){return {hint:'Conserte o sinal (<kbd>f-</kbd> <kbd>r+</kbd>) e remova o debug (<kbd>dd</kbd>).',allowEdit:true,
+    lines:['funcao somar(a, b) {','  deixa total = a - b','  retorna total','  console.log("debug")','}'],cur:{r:0,c:0},
+    expected:['funcao somar(a, b) {','  deixa total = a + b','  retorna total','}']};},
+  function(){return {hint:'<kbd>/maca</kbd> <kbd>n</kbd> até a segunda, <kbd>ci"</kbd>… e um <kbd>r</kbd> no final.',allowEdit:true,
+    lines:['lista = ["maca", "maca", "uva"]','titulo = "Lista de Conpras"'],cur:{r:0,c:0},
+    expected:['lista = ["maca", "banana", "uva"]','titulo = "Lista de Compras"']};},
+  function(){return {hint:'Apague o TODO e mova a linha do meio para o fim (<kbd>dd</kbd> <kbd>p</kbd>).',allowEdit:true,
+    lines:['TODO apague esta linha','segunda linha vai para o fim','terceira linha fica'],cur:{r:0,c:0},
+    expected:['terceira linha fica','segunda linha vai para o fim']};}
+ ]}
+]}
 ];
 
-// ---------- estado ----------
-var lines=[],cur={r:0,c:0},mode='normal',level=0,gems=[],expected=null;
-var pend={op:null,count:'',g:false,find:null,textobj:false};
-var reg=null,undoStack=[],redoStack=[],keys=0,lastFind=null,lastSearch='';
-var searchBuf='',done=false,allowEdit=true;
-var unlocked=parseInt(localStorage.getItem('vimquest-unlocked')||'0',10);
-var completed=JSON.parse(localStorage.getItem('vimquest-done')||'[]');
+var MISSIONS=[];
+CHAPTERS.forEach(function(ch,ci){ch.missions.forEach(function(m){m.chapter=ci;MISSIONS.push(m);});});
 
-function $(id){return document.getElementById(id);}
+/* ============================ arena ============================ */
+var WORDS=['gato','lua','codigo','teclado','janela','cafe','livro','plugin','buffer','cursor'];
+var SENTS=[
+ 'a pratica diaria constroi a memoria muscular',
+ 'o cursor voa quando o mouse descansa',
+ 'cada comando economiza alguns segundos preciosos',
+ 'o buffer guarda o texto e o registrador guarda o resto',
+ 'um bom atalho vale por dez cliques de mouse'];
+var ARENA_GENS=[
+ function(){var s=pick(SENTS);var n=1+rnd(2);var gs=[],used={};
+   while(gs.length<n){var c=rnd(s.length);if(s[c]!==' '&&!used[c]){used[c]=1;gs.push({r:0,c:c});}}
+   return {hint:'Alcance as 💎!',allowEdit:false,lines:[s],cur:{r:0,c:rnd(s.length)},gems:gs};},
+ function(){var w=pick(WORDS);var i=1+rnd(w.length-1);
+   var bad=w.slice(0,i)+w[i-1]+w.slice(i);
+   return {hint:'Letra duplicada: <kbd>x</kbd> nela!',allowEdit:true,
+    lines:['conserte a palavra '+bad+' agora'],cur:{r:0,c:0},
+    expected:['conserte a palavra '+w+' agora']};},
+ function(){var w=pick(WORDS);var i=rnd(w.length);
+   var bad=w.slice(0,i)+'z'+w.slice(i+1);
+   return {hint:'Letra errada: <kbd>r</kbd> resolve em duas teclas.',allowEdit:true,
+    lines:['a palavra '+bad+' esta errada'],cur:{r:0,c:0},
+    expected:['a palavra '+w+' esta errada']};},
+ function(){var a=pick(WORDS),b=pick(WORDS.filter(function(x){return x!==a;}));
+   return {hint:'Troque "'+a+'" por "'+b+'" (<kbd>ciw</kbd>).',allowEdit:true,
+    lines:['escreva '+a+' bem grande'],cur:{r:0,c:0},
+    expected:['escreva '+b+' bem grande']};},
+ function(){var s=pick(SENTS);
+   return {hint:'Acrescente "!" no fim (<kbd>A</kbd>).',allowEdit:true,
+    lines:[s],cur:{r:0,c:rnd(s.length)},expected:[s+'!']};},
+ function(){var s=pick(SENTS);var t=tokens(s);var i=1+rnd(t.length-2);
+   var w=s.slice(t[i].s,t[i].e+1);
+   var dup=s.slice(0,t[i].s)+w+' '+s.slice(t[i].s);
+   return {hint:'Palavra duplicada: <kbd>dw</kbd> nela.',allowEdit:true,
+    lines:[dup],cur:{r:0,c:0},expected:[s]};},
+ function(){var s=pick(SENTS);
+   return {hint:'Duplique a linha (<kbd>yy</kbd> <kbd>p</kbd>).',allowEdit:true,
+    lines:[s],cur:{r:0,c:0},expected:[s,s]};}
+];
+var ARENA_TIME=60;
 
-function loadLevel(i){
-  level=i;var L=LEVELS[i],st=L.setup();
+/* ============================ estado ============================ */
+var lines=[],cur={r:0,c:0},mode='normal';
+var vstart=null,vline=false;
+var pend={op:null,count:'',g:false,find:null,textobj:false,replace:false};
+var reg=null,undoStack=[],redoStack=[],keys=0,lastFind=null,lastSearch='',searchBuf='';
+var gems=[],expected=null,allowEdit=true,done=false;
+var missionIdx=0,taskIdx=0,taskTotal=0,curHint='';
+var arena=false,arenaScore=0,arenaLeft=0,arenaTimer=null;
+var stars=JSON.parse(localStorage.getItem('vq2-stars')||'[]');
+var arenaBest=parseInt(localStorage.getItem('vq2-arena-best')||'0',10);
+
+/* ============================ fluxo ============================ */
+function showMenu(){
+  stopArena(false);
+  $('menu').style.display='block';$('game').classList.remove('on');
+  hideOverlays();renderMenu();
+}
+function hideOverlays(){$('winOverlay').style.display='none';$('arenaOverlay').style.display='none';}
+function starStr(n,max){var s='';for(var i=0;i<(max||3);i++)s+=i<n?'★':'☆';return s;}
+function totalStars(){return stars.reduce(function(a,b){return a+(b||0);},0);}
+function renderMenu(){
+  var h='';
+  var flat=0;
+  CHAPTERS.forEach(function(ch){
+    h+='<div class="chapter"><h2>'+ch.name+'</h2><p class="desc">'+ch.desc+'</p><div class="missions">';
+    ch.missions.forEach(function(m){
+      var idx=flat++;
+      var locked=idx>0&&!(stars[idx-1]>0);
+      var cmdNames=m.cmds.map(function(c){return c[0];}).join(' · ');
+      h+='<button class="mcard" '+(locked?'disabled':'')+' data-m="'+idx+'">'
+        +'<div class="mname">'+(locked?'🔒 ':'')+m.name+'</div>'
+        +'<div class="mstars">'+starStr(stars[idx]||0)+'</div>'
+        +'<div class="mcmds">'+escapeHtml(cmdNames)+'</div></button>';
+    });
+    h+='</div></div>';
+  });
+  h+='<div class="chapter"><h2>🏟️ Arena</h2><p class="desc">Drills aleatórios contra o relógio — '+ARENA_TIME+' segundos, quantos desafios você aguenta?</p>'
+   +'<div class="missions"><button class="mcard" id="arenaCard"><div class="mname">Modo Arena</div>'
+   +'<div class="mstars">Recorde: '+arenaBest+'</div><div class="mcmds">movimento + edição, aleatório</div></button></div></div>';
+  $('menu').innerHTML=h;
+  $('menu').querySelectorAll('.mcard[data-m]').forEach(function(b){
+    b.addEventListener('click',function(){startMission(parseInt(b.getAttribute('data-m'),10));});
+  });
+  var ac=$('arenaCard');if(ac)ac.addEventListener('click',startArena);
+  $('totalStars').textContent='⭐ '+totalStars()+'/'+(MISSIONS.length*3);
+}
+function startMission(i){
+  arena=false;missionIdx=i;taskIdx=0;keys=0;
+  var m=MISSIONS[i];taskTotal=m.tasks.length;
+  $('menu').style.display='none';$('game').classList.add('on');hideOverlays();
+  $('goal').innerHTML='<b>'+m.name+':</b> '+m.intro;
+  $('lvltitle').textContent=m.name;
+  var ch='';m.cmds.forEach(function(c){ch+='<div class="cmd"><kbd>'+c[0]+'</kbd><span>'+c[1]+'</span></div>';});
+  $('cmds').innerHTML=ch;
+  loadTask();
+  msg('Missão iniciada — desafio 1 de '+taskTotal+'.');
+}
+function loadTask(){
+  var st=arena?nextArenaTask():MISSIONS[missionIdx].tasks[taskIdx]();
+  applyTask(st);
+}
+function applyTask(st){
   lines=st.lines.slice();cur={r:st.cur.r,c:st.cur.c};
   gems=(st.gems||[]).slice();expected=st.expected?st.expected.slice():null;
-  allowEdit=L.allowEdit;mode='normal';done=false;keys=0;
-  pend={op:null,count:'',g:false,find:null,textobj:false};
+  allowEdit=st.allowEdit;curHint=st.hint||'';
+  mode='normal';done=false;vstart=null;
+  pend={op:null,count:'',g:false,find:null,textobj:false,replace:false};
   reg=null;undoStack=[];redoStack=[];searchBuf='';
-  $('goal').innerHTML='<b>Fase '+(i+1)+':</b> '+L.goal;
-  $('lvltitle').textContent=L.name;
-  var ch='<h3>Comandos desta fase</h3>';
-  L.cmds.forEach(function(c){ch+='<div class="cmd"><kbd>'+c[0]+'</kbd><span>'+c[1]+'</span></div>';});
-  ch+='<div class="cmd" style="margin-top:10px;color:var(--dim)"><kbd>R</kbd><span style="color:var(--dim)">botão ↻ reinicia a fase</span></div>';
-  $('cmds').innerHTML=ch;
+  $('hint').innerHTML=curHint;
   $('expectedWrap').style.display=expected?'block':'none';
-  $('winOverlay').style.display='none';
-  msg(allowEdit?'Edite o texto até ficar igual ao objetivo. ✏️':'Leve o cursor até cada 💎!');
-  renderLevelButtons();render();
+  renderDots();render();
+}
+function renderDots(){
+  if(arena){$('taskdots').textContent='pontos: '+arenaScore;return;}
+  var d='';for(var i=0;i<taskTotal;i++)d+=i<taskIdx?'●':(i===taskIdx?'◉':'○');
+  $('taskdots').textContent='Desafio '+(taskIdx+1)+'/'+taskTotal+'  '+d;
+}
+function msg(t){$('message').innerHTML=t;}
+
+function taskComplete(){
+  if(arena){
+    arenaScore++;msg('⚡ +1! Total: '+arenaScore);
+    loadTask();return;
+  }
+  if(taskIdx<taskTotal-1){
+    taskIdx++;
+    msg('✔ Desafio '+taskIdx+' concluído! Próximo: '+(taskIdx+1)+'/'+taskTotal);
+    loadTask();
+  }else{
+    missionComplete();
+  }
+}
+function missionComplete(){
+  done=true;mode='normal';
+  var m=MISSIONS[missionIdx];
+  var s=keys<=m.par?3:(keys<=Math.ceil(m.par*1.4)?2:1);
+  if((stars[missionIdx]||0)<s){stars[missionIdx]=s;localStorage.setItem('vq2-stars',JSON.stringify(stars));}
+  $('winTitle').textContent=s===3?'🏆 Missão completa!':'✅ Missão completa!';
+  $('winStars').textContent=starStr(s);
+  $('winMsg').textContent=s===3?'Eficiência máxima — você está voando!'
+    :(s===2?'Muito bom! Refaça com menos teclas para a 3ª estrela.':'Concluída! Repita a missão para subir as estrelas.');
+  $('winStats').textContent='Teclas: '+keys+'  ·  Par (3★): '+m.par+'  ·  2★ até '+Math.ceil(m.par*1.4);
+  $('btnNext').style.display=missionIdx<MISSIONS.length-1?'inline-block':'none';
+  if(missionIdx===MISSIONS.length-1)$('winMsg').textContent='Você dominou o Vim Quest inteiro! 🎉';
+  $('winOverlay').style.display='flex';
+  $('totalStars').textContent='⭐ '+totalStars()+'/'+(MISSIONS.length*3);
 }
 
-function renderLevelButtons(){
-  var h='';
-  LEVELS.forEach(function(L,i){
-    var cls=(i===level?'active ':'')+(completed.indexOf(i)!==-1?'done':'');
-    h+='<button class="'+cls+'" '+(i>unlocked?'disabled':'')+' onclick="loadLevel('+i+')">'+(i+1)+'</button>';
-  });
-  $('levels').innerHTML=h;
+/* ---- arena ---- */
+function nextArenaTask(){return pick(ARENA_GENS)();}
+function startArena(){
+  arena=true;arenaScore=0;arenaLeft=ARENA_TIME;keys=0;
+  $('menu').style.display='none';$('game').classList.add('on');hideOverlays();
+  $('goal').innerHTML='<b>🏟️ Arena:</b> desafios aleatórios sem parar. Complete o máximo que conseguir em '+ARENA_TIME+' segundos!';
+  $('lvltitle').textContent='🏟️ Arena';
+  $('cmds').innerHTML='<div class="cmd"><kbd>tudo</kbd><span>qualquer comando aprendido</span></div>';
+  loadTask();
+  msg('Valendo! ⏱️');
+  arenaTimer=setInterval(function(){
+    arenaLeft--;
+    if(arenaLeft<=0)stopArena(true);else render();
+  },1000);
+}
+function stopArena(show){
+  if(arenaTimer){clearInterval(arenaTimer);arenaTimer=null;}
+  if(!arena)return;
+  if(show){
+    done=true;
+    if(arenaScore>arenaBest){arenaBest=arenaScore;localStorage.setItem('vq2-arena-best',String(arenaBest));}
+    $('arenaMsg').textContent='Você completou '+arenaScore+' desafio(s)!';
+    $('arenaStats').textContent='Recorde: '+arenaBest;
+    $('arenaOverlay').style.display='flex';
+  }else{
+    arena=false;
+  }
 }
 
-function msg(t){$('message').textContent=t;}
-
-// ---------- render ----------
+/* ============================ render ============================ */
+function inSelection(r,c){
+  if(mode!=='visual'||!vstart)return false;
+  var a=vstart,b=cur,r1,c1,r2,c2;
+  if(a.r<b.r||(a.r===b.r&&a.c<=b.c)){r1=a.r;c1=a.c;r2=b.r;c2=b.c;}
+  else{r1=b.r;c1=b.c;r2=a.r;c2=a.c;}
+  if(vline)return r>=r1&&r<=r2;
+  if(r<r1||r>r2)return false;
+  if(r1===r2)return c>=c1&&c<=c2;
+  if(r===r1)return c>=c1;
+  if(r===r2)return c<=c2;
+  return true;
+}
 function render(){
   var html='';
   for(var r=0;r<lines.length;r++){
     var line=lines[r];
     html+='<div class="ln"><span class="num">'+(r+1)+'</span>';
     var len=line.length;
+    if(len===0){
+      html+='<span class="cell '+(cur.r===r?(mode==='insert'?'cursorbar':'cursor'):'')+'"> </span></div>';
+      continue;
+    }
     for(var c=0;c<=len;c++){
-      var ch=c<len?line[c]:' ';
       if(c===len&&!(mode==='insert'&&cur.r===r&&cur.c===len))continue;
+      var ch=c<len?line[c]:' ';
       var cls='cell';
-      if(gems.some(function(g){return g.r===r&&g.c===c;}))cls+=' gem';
+      if(inSelection(r,c))cls+=' sel';
+      for(var gi=0;gi<gems.length;gi++)if(gems[gi].r===r&&gems[gi].c===c){cls+=' gem';break;}
       if(cur.r===r&&cur.c===c)cls+=mode==='insert'?' cursorbar':' cursor';
-      if(ch===' ')ch=' ';
       html+='<span class="'+cls+'">'+escapeHtml(ch)+'</span>';
     }
-    if(len===0&&!(cur.r===r))html+='<span class="cell"> </span>';
-    if(len===0&&cur.r===r)html+='<span class="cell '+(mode==='insert'?'cursorbar':'cursor')+'"> </span>';
     html+='</div>';
   }
   $('buffer').innerHTML=html;
   var m=$('mode');
   if(mode==='insert'){m.textContent='INSERT';m.className='insert';}
   else if(mode==='search'){m.textContent='/'+searchBuf;m.className='search';}
+  else if(mode==='visual'){m.textContent=vline?'V-LINE':'VISUAL';m.className='visual';}
   else{m.textContent='NORMAL';m.className='';}
-  var info='teclas: '+keys;
-  if(gems.length||!expected){var L=LEVELS[level],tot=(L.setup().gems||[]).length;
-    if(tot)info+='   💎 '+(tot-gems.length)+'/'+tot;}
+  var info;
+  if(arena){info='⏱️ '+arenaLeft+'s  ·  pontos: '+arenaScore;}
+  else{
+    info='teclas: '+keys+' · par: '+MISSIONS[missionIdx].par;
+    if(gems.length)info+='  ·  💎 restantes: '+gems.length;
+  }
   $('info').textContent=info;
-  $('pending').textContent=pend.count+(pend.op||'')+(pend.g?'g':'')+(pend.find?pend.find:'')+(pend.textobj?'i':'');
+  $('pending').textContent=pend.count+(pend.op||'')+(pend.g?'g':'')+(pend.find?pend.find:'')+(pend.textobj?'i':'')+(pend.replace?'r':'');
   if(expected){
     var eh='';
     for(var i=0;i<expected.length;i++){
-      var ok=lines[i]===expected[i]&&lines.length===expected.length;
+      var ok=lines.length===expected.length&&lines[i]===expected[i];
       eh+='<div class="'+(ok?'ok':'bad')+'">'+escapeHtml(expected[i])+'</div>';
     }
     $('expected').innerHTML=eh;
   }
+  renderDots();
 }
-function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// ---------- mecânica ----------
+/* ============================ engine ============================ */
 function clampCol(){
   var len=lines[cur.r].length;
   var max=mode==='insert'?len:Math.max(0,len-1);
@@ -321,186 +638,250 @@ function snapshot(){
   if(undoStack.length>200)undoStack.shift();
   redoStack=[];
 }
+function undo(){
+  if(!undoStack.length){msg('Nada para desfazer.');return;}
+  redoStack.push({lines:lines.slice(),cur:{r:cur.r,c:cur.c}});
+  var s=undoStack.pop();lines=s.lines.slice();cur={r:s.cur.r,c:s.cur.c};
+  msg('Desfeito. (Ctrl+r refaz)');
+}
+function redo(){
+  if(!redoStack.length){msg('Nada para refazer.');return;}
+  undoStack.push({lines:lines.slice(),cur:{r:cur.r,c:cur.c}});
+  var s=redoStack.pop();lines=s.lines.slice();cur={r:s.cur.r,c:s.cur.c};
+  msg('Refeito.');
+}
 function checkState(){
   if(done)return;
-  // coleta de joias
   for(var i=gems.length-1;i>=0;i--){
-    if(gems[i].r===cur.r&&gems[i].c===cur.c){
-      gems.splice(i,1);
-      msg('💎 Joia coletada!');
-    }
+    if(gems[i].r===cur.r&&gems[i].c===cur.c){gems.splice(i,1);if(!arena)msg('💎 Joia coletada!');}
   }
   var win=false;
-  if(expected){
-    win=lines.length===expected.length&&lines.every(function(l,j){return l===expected[j];});
-  }else{
-    win=gems.length===0;
-  }
-  if(win)levelComplete();
+  if(expected)win=lines.length===expected.length&&lines.every(function(l,j){return l===expected[j];});
+  else win=gems.length===0;
+  if(win)taskComplete();
 }
-function levelComplete(){
-  done=true;mode='normal';
-  var L=LEVELS[level];
-  if(completed.indexOf(level)===-1)completed.push(level);
-  if(level===unlocked&&unlocked<LEVELS.length-1)unlocked++;
-  localStorage.setItem('vimquest-unlocked',String(unlocked));
-  localStorage.setItem('vimquest-done',JSON.stringify(completed));
-  var beatPar=keys<=L.par;
-  $('winTitle').textContent=beatPar?'🏆 Fase completa!':'✅ Fase completa!';
-  $('winMsg').textContent=beatPar?'Abaixo do par — você está voando!':'Muito bem! Tente bater o par na próxima vez.';
-  $('winStats').textContent='Teclas usadas: '+keys+'  ·  Par: '+L.par;
-  $('btnNext').style.display=level<LEVELS.length-1?'inline-block':'none';
-  if(level===LEVELS.length-1)$('winMsg').textContent='Você dominou os fundamentos do Neovim! 🎉';
-  $('winOverlay').style.display='flex';
-  renderLevelButtons();
-}
-
-// movimentos: retorna {r,c,incl} ou null
-function doMotion(k,count){
-  var r=cur.r,c=cur.c,line=lines[r],i;
+function firstNonBlank(line){var m=line.match(/\S/);return m?m.index:0;}
+function doMotion(k,count,hasCount){
+  var r=cur.r,c=cur.c,line=lines[r],i,p;
   switch(k){
     case 'h':return {r:r,c:Math.max(0,c-count),incl:false};
     case 'l':return {r:r,c:Math.min(Math.max(0,line.length-1),c+count),incl:false};
     case 'j':return {r:Math.min(lines.length-1,r+count),c:c,incl:false,linewise:true};
     case 'k':return {r:Math.max(0,r-count),c:c,incl:false,linewise:true};
     case '0':return {r:r,c:0,incl:false};
+    case '^':return {r:r,c:firstNonBlank(line),incl:false};
     case '$':return {r:r,c:Math.max(0,line.length-1),incl:true};
-    case 'w':var p={r:r,c:c};for(i=0;i<count;i++)p=fwdWordStart(p.r,p.c);return {r:p.r,c:p.c,incl:false};
-    case 'e':var q={r:r,c:c};for(i=0;i<count;i++)q=fwdWordEnd(q.r,q.c);return {r:q.r,c:q.c,incl:true};
-    case 'b':var u={r:r,c:c};for(i=0;i<count;i++)u=backWordStart(u.r,u.c);return {r:u.r,c:u.c,incl:false};
-    case 'G':var row=count>1||pend.count!==''?Math.min(lines.length,count)-1:lines.length-1;
-      return {r:Math.max(0,row),c:0,incl:false,linewise:true};
+    case 'w':p={r:r,c:c};for(i=0;i<count;i++)p=fwdWordStart(p.r,p.c);return {r:p.r,c:p.c,incl:false};
+    case 'e':p={r:r,c:c};for(i=0;i<count;i++)p=fwdWordEnd(p.r,p.c);return {r:p.r,c:p.c,incl:true};
+    case 'b':p={r:r,c:c};for(i=0;i<count;i++)p=backWordStart(p.r,p.c);return {r:p.r,c:p.c,incl:false};
+    case 'G':return {r:Math.max(0,(hasCount?Math.min(count,lines.length):lines.length)-1),c:0,incl:false,linewise:true};
   }
   return null;
 }
 function fwdWordStart(r,c){
   for(var rr=r;rr<lines.length;rr++){
     var ts=tokens(lines[rr]);
-    for(var i=0;i<ts.length;i++){
-      if(rr===r?ts[i].s>c:true)return {r:rr,c:ts[i].s};
-    }
+    for(var i=0;i<ts.length;i++)if(rr===r?ts[i].s>c:true)return {r:rr,c:ts[i].s};
   }
   var lr=lines.length-1;return {r:lr,c:Math.max(0,lines[lr].length-1)};
 }
 function fwdWordEnd(r,c){
   for(var rr=r;rr<lines.length;rr++){
     var ts=tokens(lines[rr]);
-    for(var i=0;i<ts.length;i++){
-      if(rr===r?ts[i].e>c:true)return {r:rr,c:ts[i].e};
-    }
+    for(var i=0;i<ts.length;i++)if(rr===r?ts[i].e>c:true)return {r:rr,c:ts[i].e};
   }
   var lr=lines.length-1;return {r:lr,c:Math.max(0,lines[lr].length-1)};
 }
 function backWordStart(r,c){
   for(var rr=r;rr>=0;rr--){
     var ts=tokens(lines[rr]);
-    for(var i=ts.length-1;i>=0;i--){
-      if(rr===r?ts[i].s<c:true)return {r:rr,c:ts[i].s};
-    }
+    for(var i=ts.length-1;i>=0;i--)if(rr===r?ts[i].s<c:true)return {r:rr,c:ts[i].s};
   }
   return {r:0,c:0};
 }
-function findChar(ch,dir){
+/* f/t/F/T: retorna coluna alvo ou -1; repeat=true ao usar ; (pula o vizinho no t/T) */
+function findCharTarget(type,ch,repeat){
   var line=lines[cur.r],i;
-  if(dir>0){i=line.indexOf(ch,cur.c+1);}
-  else{i=line.lastIndexOf(ch,cur.c-1);if(cur.c===0)i=-1;}
-  if(i!==-1){cur.c=i;return true;}
-  return false;
+  if(type==='f'){i=line.indexOf(ch,cur.c+1);return i;}
+  if(type==='F'){return cur.c>0?line.lastIndexOf(ch,cur.c-1):-1;}
+  if(type==='t'){
+    i=line.indexOf(ch,cur.c+(repeat?2:1));
+    return i===-1?-1:(i-1>cur.c||!repeat&&i-1>=cur.c?i-1:-1);
+  }
+  if(type==='T'){
+    var from=cur.c-(repeat?2:1);
+    if(from<0)return -1;
+    i=line.lastIndexOf(ch,from);
+    return i===-1?-1:i+1;
+  }
+  return -1;
 }
-function doSearch(q){
-  if(!q)return;
+function doSearch(q,backward){
+  if(!q)return false;
   lastSearch=q;
-  var i=lines[cur.r].indexOf(q,cur.c+1);
-  if(i!==-1){cur.c=i;return true;}
-  for(var d=1;d<=lines.length;d++){
-    var rr=(cur.r+d)%lines.length;
-    var j=lines[rr].indexOf(q);
-    if(j!==-1){cur.r=rr;cur.c=j;return true;}
+  var i,d,rr;
+  if(!backward){
+    i=lines[cur.r].indexOf(q,cur.c+1);
+    if(i!==-1){cur.c=i;return true;}
+    for(d=1;d<=lines.length;d++){
+      rr=(cur.r+d)%lines.length;
+      i=lines[rr].indexOf(q);
+      if(i!==-1){cur.r=rr;cur.c=i;return true;}
+    }
+  }else{
+    i=cur.c>0?lines[cur.r].lastIndexOf(q,cur.c-1):-1;
+    if(i!==-1&&i<cur.c){cur.c=i;return true;}
+    for(d=1;d<=lines.length;d++){
+      rr=(cur.r-d+lines.length*2)%lines.length;
+      i=lines[rr].lastIndexOf(q);
+      if(i!==-1){cur.r=rr;cur.c=i;return true;}
+    }
   }
   msg('Padrão não encontrado: '+q);
   return false;
 }
 function blockEdit(){
-  if(!allowEdit){msg('🔒 Nesta fase use apenas movimentos!');return true;}
+  if(!allowEdit){msg('🔒 Neste desafio use apenas movimentos!');return true;}
   return false;
 }
-function deleteRange(r,a,b){ // inclusivo, mesma linha
+function deleteRange(r,a,b){
   var line=lines[r];
   var txt=line.slice(a,b+1);
   lines[r]=line.slice(0,a)+line.slice(b+1);
   return txt;
 }
-function startInsert(snap){
-  if(snap!==false)snapshot();
-  mode='insert';
-}
-function exitInsert(){
-  mode='normal';
-  cur.c=Math.max(0,cur.c-1);
-  clampCol();
-}
+function startInsert(snap){if(snap!==false)snapshot();mode='insert';}
+function exitInsert(){mode='normal';cur.c=Math.max(0,cur.c-1);clampCol();}
 function applyOperator(op,m){
   if(!m)return;
-  if(m.linewise){msg('Movimento não suportado com '+op);return;}
-  var targetR=m.r,targetC=m.c,incl=m.incl;
-  if(targetR>cur.r){targetR=cur.r;targetC=Math.max(0,lines[cur.r].length-1);incl=true;}
-  if(targetR<cur.r){msg('Movimento não suportado com '+op);return;}
+  if(m.linewise){msg('Movimento não suportado com '+op+'.');return;}
+  var tr=m.r,tc=m.c,incl=m.incl;
+  if(tr>cur.r){tc=Math.max(0,lines[cur.r].length-1);incl=true;tr=cur.r;}
+  if(tr<cur.r){msg('Movimento não suportado com '+op+'.');return;}
   var a,b;
-  if(targetC>cur.c){a=cur.c;b=incl?targetC:targetC-1;}
-  else if(targetC<cur.c){a=targetC;b=cur.c-1;}
+  if(tc>cur.c){a=cur.c;b=incl?tc:tc-1;}
+  else if(tc<cur.c){a=tc;b=cur.c-1;}
   else if(incl){a=cur.c;b=cur.c;}
   else return;
   if(b<a)return;
-  if(op==='y'){
-    reg={linewise:false,text:lines[cur.r].slice(a,b+1)};
-    cur.c=a;msg('Texto copiado!');return;
-  }
+  if(op==='y'){reg={linewise:false,text:lines[cur.r].slice(a,b+1)};cur.c=a;msg('Copiado!');return;}
+  if(blockEdit())return;
   snapshot();
-  var txt=deleteRange(cur.r,a,b);
-  reg={linewise:false,text:txt};
+  reg={linewise:false,text:deleteRange(cur.r,a,b)};
   cur.c=a;
   if(op==='c')startInsert(false);else clampCol();
 }
 function innerWordRange(){
   var ts=tokens(lines[cur.r]);
-  for(var i=0;i<ts.length;i++){
-    if(cur.c>=ts[i].s&&cur.c<=ts[i].e)return ts[i];
-  }
+  for(var i=0;i<ts.length;i++)if(cur.c>=ts[i].s&&cur.c<=ts[i].e)return ts[i];
   return null;
 }
+function textObjRange(ch){
+  var line=lines[cur.r];
+  if(ch==='w')return innerWordRange();
+  if(ch==='"'||ch==="'"){
+    var idx=allIndexes(line,ch);
+    for(var j=0;j+1<idx.length;j+=2)if(cur.c<=idx[j+1])return {s:idx[j]+1,e:idx[j+1]-1};
+    return null;
+  }
+  var open,close;
+  if(ch==='('||ch===')'){open='(';close=')';}
+  else if(ch==='{'||ch==='}'){open='{';close='}';}
+  else if(ch==='['||ch===']'){open='[';close=']';}
+  else return null;
+  var depth=0,s=-1,a;
+  for(a=cur.c;a>=0;a--){
+    if(line[a]===close&&a<cur.c)depth++;
+    else if(line[a]===open){if(depth===0){s=a;break;}depth--;}
+  }
+  if(s===-1)return null;
+  var d2=0,e=-1,b2;
+  for(b2=s+1;b2<line.length;b2++){
+    if(line[b2]===open)d2++;
+    else if(line[b2]===close){if(d2===0){e=b2;break;}d2--;}
+  }
+  if(e===-1)return null;
+  return {s:s+1,e:e-1};
+}
+/* ---- visual ---- */
+function selRange(){
+  var a=vstart,b=cur;
+  if(a.r<b.r||(a.r===b.r&&a.c<=b.c))return {r1:a.r,c1:a.c,r2:b.r,c2:b.c};
+  return {r1:b.r,c1:b.c,r2:a.r,c2:a.c};
+}
+function visualOp(op){ /* op: 'd'|'y'|'c' */
+  var s=selRange();
+  if(op!=='y'&&blockEdit()){mode='normal';vstart=null;return;}
+  if(vline){
+    if(op==='y'){
+      reg={linewise:true,text:lines.slice(s.r1,s.r2+1)};
+      cur={r:s.r1,c:0};mode='normal';vstart=null;msg('Linhas copiadas!');return;
+    }
+    snapshot();
+    reg={linewise:true,text:lines.splice(s.r1,s.r2-s.r1+1)};
+    if(!lines.length)lines=[''];
+    cur={r:Math.min(s.r1,lines.length-1),c:0};
+    if(op==='c'){lines.splice(cur.r,0,'');startInsert(false);}
+    mode=op==='c'?'insert':'normal';vstart=null;
+    clampCol();return;
+  }
+  if(op==='y'){
+    if(s.r1===s.r2)reg={linewise:false,text:lines[s.r1].slice(s.c1,s.c2+1)};
+    else reg={linewise:false,text:lines[s.r1].slice(s.c1)};
+    cur={r:s.r1,c:s.c1};mode='normal';vstart=null;msg('Copiado!');return;
+  }
+  snapshot();
+  if(s.r1===s.r2){
+    reg={linewise:false,text:deleteRange(s.r1,s.c1,s.c2)};
+  }else{
+    reg={linewise:false,text:lines[s.r1].slice(s.c1)};
+    lines[s.r1]=lines[s.r1].slice(0,s.c1)+lines[s.r2].slice(s.c2+1);
+    lines.splice(s.r1+1,s.r2-s.r1);
+  }
+  cur={r:s.r1,c:s.c1};
+  vstart=null;
+  if(op==='c'){mode='insert';}else{mode='normal';clampCol();}
+}
 
-// ---------- teclado ----------
+/* ============================ teclado ============================ */
 document.addEventListener('keydown',function(e){
+  if(!$('game').classList.contains('on'))return;
   var k=e.key;
   if(k==='Shift'||k==='Control'||k==='Alt'||k==='Meta'||k==='CapsLock')return;
   if(done){
-    if(k==='Enter'){e.preventDefault();if(level<LEVELS.length-1)loadLevel(level+1);}
+    if(k==='Enter'){
+      e.preventDefault();
+      if(arena){startArena();}
+      else if(missionIdx<MISSIONS.length-1)startMission(missionIdx+1);
+    }
     return;
   }
   if(k.indexOf('Arrow')===0){e.preventDefault();msg('😉 Nada de setas! Use h j k l.');return;}
   if(e.ctrlKey){
-    if(k==='r'&&mode==='normal'){e.preventDefault();keys++;redo();render();}
+    if(k==='r'&&mode==='normal'){e.preventDefault();keys++;redo();clampCol();checkState();render();}
     return;
   }
-  if(mode==='search'){e.preventDefault();keys++;handleSearchKey(k);render();return;}
+  if(mode==='search'){e.preventDefault();keys++;handleSearchKey(k);clampCol();checkState();render();return;}
   if(mode==='insert'){
-    if(k==='Escape'||k==='Enter'||k==='Backspace'||k.length===1){e.preventDefault();keys++;handleInsert(k);clampColInsert();checkState();render();}
+    if(k==='Escape'||k==='Enter'||k==='Backspace'||k.length===1){
+      e.preventDefault();keys++;handleInsert(k);checkState();render();
+    }
     return;
   }
-  // modo normal
-  if(k==='Escape'){e.preventDefault();pend={op:null,count:'',g:false,find:null,textobj:false};msg('');render();return;}
+  if(k==='Escape'){
+    e.preventDefault();
+    pend={op:null,count:'',g:false,find:null,textobj:false,replace:false};
+    if(mode==='visual'){mode='normal';vstart=null;}
+    render();return;
+  }
   if(k.length!==1)return;
   e.preventDefault();keys++;
-  handleNormal(k);
+  handleKey(k);
   clampCol();checkState();render();
 });
-function clampColInsert(){
-  var len=lines[cur.r].length;
-  if(cur.c>len)cur.c=len;if(cur.c<0)cur.c=0;
-}
 function handleSearchKey(k){
   if(k==='Escape'){mode='normal';searchBuf='';return;}
-  if(k==='Enter'){mode='normal';doSearch(searchBuf);searchBuf='';checkState();return;}
+  if(k==='Enter'){mode='normal';doSearch(searchBuf,false);searchBuf='';return;}
   if(k==='Backspace'){searchBuf=searchBuf.slice(0,-1);return;}
   if(k.length===1)searchBuf+=k;
 }
@@ -524,67 +905,70 @@ function handleInsert(k){
   lines[cur.r]=line.slice(0,cur.c)+k+line.slice(cur.c);
   cur.c++;
 }
-function undo(){
-  if(!undoStack.length){msg('Nada para desfazer.');return;}
-  redoStack.push({lines:lines.slice(),cur:{r:cur.r,c:cur.c}});
-  var s=undoStack.pop();lines=s.lines.slice();cur={r:s.cur.r,c:s.cur.c};
-  msg('Desfeito. (Ctrl+r refaz)');
-}
-function redo(){
-  if(!redoStack.length){msg('Nada para refazer.');return;}
-  undoStack.push({lines:lines.slice(),cur:{r:cur.r,c:cur.c}});
-  var s=redoStack.pop();lines=s.lines.slice();cur={r:s.cur.r,c:s.cur.c};
-  msg('Refeito.');
-}
-function handleNormal(k){
-  // f/F pendente: próxima tecla é o alvo
-  if(pend.find){
-    var dir=pend.find==='f'?1:-1;
-    if(findChar(k,dir))lastFind={ch:k,dir:dir};
-    else msg('"'+k+'" não encontrado na linha.');
-    pend.find=null;return;
+function handleKey(k){
+  /* r{c} pendente */
+  if(pend.replace){
+    pend.replace=false;
+    if(blockEdit())return;
+    var ln=lines[cur.r];
+    if(ln.length){snapshot();lines[cur.r]=ln.slice(0,cur.c)+k+ln.slice(cur.c+1);}
+    return;
   }
-  // text object pendente (ciw/diw/yiw)
+  /* f/t/F/T pendente */
+  if(pend.find){
+    var type=pend.find;pend.find=null;
+    var target=findCharTarget(type,k,false);
+    if(target===-1||target===cur.c){msg('"'+k+'" não encontrado na linha.');pend.op=null;return;}
+    lastFind={type:type,ch:k};
+    if(pend.op&&mode!=='visual'){
+      var op0=pend.op;pend.op=null;pend.count='';
+      applyOperator(op0,{r:cur.r,c:target,incl:type==='f'||type==='t'});
+    }else cur.c=target;
+    return;
+  }
+  /* text object pendente (c/d/y + i + w"({[ ) */
   if(pend.textobj){
-    if(k==='w'){
-      var t=innerWordRange();
-      var op=pend.op;
-      pend.op=null;pend.textobj=false;pend.count='';
-      if(!t){msg('Nenhuma palavra sob o cursor.');return;}
-      if(op==='y'){reg={linewise:false,text:lines[cur.r].slice(t.s,t.e+1)};msg('Palavra copiada!');return;}
-      if(blockEdit())return;
-      snapshot();
-      reg={linewise:false,text:deleteRange(cur.r,t.s,t.e)};
-      cur.c=t.s;
-      if(op==='c')startInsert(false);else clampCol();
+    pend.textobj=false;
+    var opT=pend.op;pend.op=null;pend.count='';
+    var rng=textObjRange(k);
+    if(!rng){msg('Nenhum alvo para i'+k+' aqui.');return;}
+    if(rng.e<rng.s){ /* par vazio */
+      if(opT==='c'&&!blockEdit()){snapshot();cur.c=rng.s;startInsert(false);}
       return;
     }
-    pend.textobj=false;pend.op=null;pend.count='';return;
+    if(opT==='y'){reg={linewise:false,text:lines[cur.r].slice(rng.s,rng.e+1)};msg('Copiado!');return;}
+    if(blockEdit())return;
+    snapshot();
+    reg={linewise:false,text:deleteRange(cur.r,rng.s,rng.e)};
+    cur.c=rng.s;
+    if(opT==='c')startInsert(false);else clampCol();
+    return;
   }
-  // gg
+  /* gg */
   if(pend.g){
     pend.g=false;
     if(k==='g'){cur.r=0;cur.c=0;}
     return;
   }
-  // contagem
+  /* contagem */
   if(/[1-9]/.test(k)||(k==='0'&&pend.count!=='')){pend.count+=k;return;}
-  var count=pend.count===''?1:parseInt(pend.count,10);
+  var hasCount=pend.count!=='';
+  var count=hasCount?parseInt(pend.count,10):1;
+  pend.count='';
 
-  // operador pendente
-  if(pend.op){
+  /* operador pendente (modo normal) */
+  if(pend.op&&mode!=='visual'){
     var op=pend.op;
-    if(k===op){ // dd / yy / cc
-      pend.op=null;pend.count='';
+    if(k===op){ /* dd / yy / cc */
+      pend.op=null;
       if(op==='y'){
         reg={linewise:true,text:lines.slice(cur.r,cur.r+count)};
         msg(count>1?count+' linhas copiadas!':'Linha copiada!');return;
       }
       if(blockEdit())return;
       snapshot();
-      var removed=lines.splice(cur.r,count);
-      reg={linewise:true,text:removed};
-      if(lines.length===0)lines=[''];
+      reg={linewise:true,text:lines.splice(cur.r,count)};
+      if(!lines.length)lines=[''];
       if(cur.r>=lines.length)cur.r=lines.length-1;
       cur.c=0;
       if(op==='c'){lines.splice(cur.r,0,'');startInsert(false);}
@@ -592,60 +976,101 @@ function handleNormal(k){
       return;
     }
     if(k==='i'){pend.textobj=true;return;}
-    pend.op=null;pend.count='';
-    if(op!=='y'&&blockEdit())return;
-    var m=doMotion(k,count);
-    if(m)applyOperator(op,m);
+    if(k==='f'||k==='F'||k==='t'||k==='T'){pend.find=k;return;}
+    pend.op=null;
+    var mo=doMotion(k,count,hasCount);
+    if(mo)applyOperator(op,mo);
     else msg('Movimento desconhecido: '+k);
     return;
   }
 
-  pend.count='';
+  /* modo visual */
+  if(mode==='visual'){
+    var mv=doMotion(k,count,hasCount);
+    if(mv){cur.r=mv.r;cur.c=mv.c;return;}
+    switch(k){
+      case 'f':case 'F':case 't':case 'T':pend.find=k;return;
+      case ';':if(lastFind){var t1=findCharTarget(lastFind.type,lastFind.ch,true);if(t1!==-1&&t1!==cur.c)cur.c=t1;}return;
+      case 'g':pend.g=true;return;
+      case 'v':case 'V':mode='normal';vstart=null;return;
+      case 'd':case 'x':visualOp('d');return;
+      case 'y':visualOp('y');return;
+      case 'c':visualOp('c');return;
+      default:msg('Tecla "'+k+'" não funciona no modo visual (ainda).');keys--;return;
+    }
+  }
+
+  /* modo normal */
+  var mm=doMotion(k,count,hasCount);
+  if(mm){cur.r=mm.r;cur.c=mm.c;return;}
   switch(k){
-    case 'h':case 'j':case 'k':case 'l':case 'w':case 'b':case 'e':case '0':case '$':case 'G':{
-      pend.count=String(count===1?'':count); // para G usar a contagem
-      var mm=doMotion(k,count);
-      pend.count='';
-      if(mm){cur.r=mm.r;cur.c=mm.c;}
-      break;}
     case 'g':pend.g=true;break;
-    case 'f':case 'F':pend.find=k;break;
+    case 'f':case 'F':case 't':case 'T':pend.find=k;break;
     case ';':
-      if(lastFind){if(!findChar(lastFind.ch,lastFind.dir))msg('Fim das ocorrências na linha.');}
-      else msg('Use f{caractere} primeiro.');
+      if(lastFind){
+        var t2=findCharTarget(lastFind.type,lastFind.ch,true);
+        if(t2!==-1&&t2!==cur.c)cur.c=t2;else msg('Fim das ocorrências na linha.');
+      }else msg('Use f/t + caractere primeiro.');
+      break;
+    case ',':
+      if(lastFind){
+        var inv={f:'F',F:'f',t:'T',T:'t'}[lastFind.type];
+        var t3=findCharTarget(inv,lastFind.ch,true);
+        if(t3!==-1&&t3!==cur.c)cur.c=t3;
+      }
       break;
     case '/':mode='search';searchBuf='';break;
-    case 'n':
-      if(lastSearch)doSearch(lastSearch);
-      else msg('Faça uma busca com / primeiro.');
-      break;
-    case 'd':case 'c':case 'y':pend.op=k;break;
+    case 'n':if(lastSearch)doSearch(lastSearch,false);else msg('Faça uma busca com / primeiro.');break;
+    case 'N':if(lastSearch)doSearch(lastSearch,true);else msg('Faça uma busca com / primeiro.');break;
+    case 'v':mode='visual';vline=false;vstart={r:cur.r,c:cur.c};break;
+    case 'V':mode='visual';vline=true;vstart={r:cur.r,c:cur.c};break;
+    case 'd':case 'c':case 'y':pend.op=k;pend.count=hasCount?String(count):'';break;
+    case 'r':pend.replace=true;break;
+    case '~':{
+      if(blockEdit())break;
+      var lt=lines[cur.r];
+      if(!lt.length)break;
+      snapshot();
+      var chT=lt[cur.c];
+      var sw=chT===chT.toLowerCase()?chT.toUpperCase():chT.toLowerCase();
+      lines[cur.r]=lt.slice(0,cur.c)+sw+lt.slice(cur.c+1);
+      cur.c=Math.min(cur.c+1,Math.max(0,lt.length-1));
+      break;}
     case 'x':{
       if(blockEdit())break;
-      var line=lines[cur.r];
-      if(line.length===0)break;
+      var lx=lines[cur.r];
+      if(!lx.length)break;
       snapshot();
-      var n=Math.min(count,line.length-cur.c);
-      reg={linewise:false,text:line.substr(cur.c,n)};
-      lines[cur.r]=line.slice(0,cur.c)+line.slice(cur.c+n);
+      var nx=Math.min(count,lx.length-cur.c);
+      reg={linewise:false,text:lx.substr(cur.c,nx)};
+      lines[cur.r]=lx.slice(0,cur.c)+lx.slice(cur.c+nx);
       clampCol();break;}
     case 'D':{
       if(blockEdit())break;
-      var l2=lines[cur.r];
-      if(cur.c<l2.length){snapshot();reg={linewise:false,text:l2.slice(cur.c)};lines[cur.r]=l2.slice(0,cur.c);clampCol();}
+      var ld=lines[cur.r];
+      if(cur.c<ld.length){snapshot();reg={linewise:false,text:ld.slice(cur.c)};lines[cur.r]=ld.slice(0,cur.c);clampCol();}
+      break;}
+    case 'J':{
+      if(blockEdit())break;
+      if(cur.r<lines.length-1){
+        snapshot();
+        var top=lines[cur.r],bot=lines[cur.r+1].replace(/^\s+/,'');
+        cur.c=top.length;
+        lines[cur.r]=top+(top.length&&bot.length?' ':'')+bot;
+        lines.splice(cur.r+1,1);
+      }
       break;}
     case 'p':{
       if(blockEdit())break;
-      if(!reg){msg('Nada copiado ainda (use yy, dd ou x).');break;}
+      if(!reg){msg('Nada copiado ainda (yy, dd, x…).');break;}
       snapshot();
       if(reg.linewise){
-        var copy=reg.text.slice();
-        for(var i2=0;i2<copy.length;i2++)lines.splice(cur.r+1+i2,0,copy[i2]);
+        for(var i1=0;i1<reg.text.length;i1++)lines.splice(cur.r+1+i1,0,reg.text[i1]);
         cur.r++;cur.c=0;
       }else{
-        var ln=lines[cur.r];
-        var at=Math.min(cur.c+1,ln.length);
-        lines[cur.r]=ln.slice(0,at)+reg.text+ln.slice(at);
+        var lp=lines[cur.r];
+        var at=Math.min(cur.c+1,lp.length);
+        lines[cur.r]=lp.slice(0,at)+reg.text+lp.slice(at);
         cur.c=at+reg.text.length-1;
       }
       break;}
@@ -654,36 +1079,36 @@ function handleNormal(k){
       if(!reg){msg('Nada copiado ainda.');break;}
       snapshot();
       if(reg.linewise){
-        var copy2=reg.text.slice();
-        for(var i3=0;i3<copy2.length;i3++)lines.splice(cur.r+i3,0,copy2[i3]);
+        for(var i2=0;i2<reg.text.length;i2++)lines.splice(cur.r+i2,0,reg.text[i2]);
         cur.c=0;
       }else{
-        var ln2=lines[cur.r];
-        lines[cur.r]=ln2.slice(0,cur.c)+reg.text+ln2.slice(cur.c);
+        var lP=lines[cur.r];
+        lines[cur.r]=lP.slice(0,cur.c)+reg.text+lP.slice(cur.c);
         cur.c=cur.c+reg.text.length-1;
       }
       break;}
     case 'i':if(blockEdit())break;startInsert();break;
     case 'a':if(blockEdit())break;startInsert();cur.c=Math.min(cur.c+1,lines[cur.r].length);break;
     case 'A':if(blockEdit())break;startInsert();cur.c=lines[cur.r].length;break;
-    case 'I':if(blockEdit())break;startInsert();cur.c=0;break;
-    case 'o':
-      if(blockEdit())break;
-      snapshot();lines.splice(cur.r+1,0,'');cur.r++;cur.c=0;startInsert(false);break;
-    case 'O':
-      if(blockEdit())break;
-      snapshot();lines.splice(cur.r,0,'');cur.c=0;startInsert(false);break;
+    case 'I':if(blockEdit())break;startInsert();cur.c=firstNonBlank(lines[cur.r]);break;
+    case 'o':if(blockEdit())break;snapshot();lines.splice(cur.r+1,0,'');cur.r++;cur.c=0;startInsert(false);break;
+    case 'O':if(blockEdit())break;snapshot();lines.splice(cur.r,0,'');cur.c=0;startInsert(false);break;
     case 'u':if(blockEdit())break;undo();break;
     default:msg('Tecla "'+k+'" ainda não faz parte do jogo.');keys--;break;
   }
 }
 
-// ---------- UI ----------
-$('reset').addEventListener('click',function(){loadLevel(level);});
-$('btnReplay').addEventListener('click',function(){loadLevel(level);});
-$('btnNext').addEventListener('click',function(){if(level<LEVELS.length-1)loadLevel(level+1);});
+/* ============================ UI ============================ */
+$('btnMenu').addEventListener('click',showMenu);
+$('btnArena').addEventListener('click',startArena);
+$('reset').addEventListener('click',function(){if(arena)startArena();else startMission(missionIdx);});
+$('btnReplay').addEventListener('click',function(){startMission(missionIdx);});
+$('btnBackMenu').addEventListener('click',showMenu);
+$('btnNext').addEventListener('click',function(){if(missionIdx<MISSIONS.length-1)startMission(missionIdx+1);});
+$('btnArenaMenu').addEventListener('click',showMenu);
+$('btnArenaAgain').addEventListener('click',startArena);
 
-loadLevel(Math.min(unlocked,LEVELS.length-1));
+showMenu();
 </script>
 </body>
 </html>
