@@ -430,6 +430,7 @@ var ARENA_GENS=[
     lines:[s],cur:{r:0,c:0},expected:[s,s]};}
 ];
 var ARENA_TIME=60;
+var ARENA_BONUS=5; /* segundos ganhos por desafio completado */
 
 /* ============================ estado ============================ */
 var lines=[],cur={r:0,c:0},mode='normal';
@@ -467,7 +468,7 @@ function renderMenu(){
     });
     h+='</div></div>';
   });
-  h+='<div class="chapter"><h2>🏟️ Arena</h2><p class="desc">Drills aleatórios contra o relógio — '+ARENA_TIME+' segundos, quantos desafios você aguenta?</p>'
+  h+='<div class="chapter"><h2>🏟️ Arena</h2><p class="desc">Drills aleatórios contra o relógio — comece com '+ARENA_TIME+'s, ganhe +'+ARENA_BONUS+'s por desafio. Até onde você vai?</p>'
    +'<div class="missions"><button class="mcard" id="arenaCard"><div class="mname">Modo Arena</div>'
    +'<div class="mstars">Recorde: '+arenaBest+'</div><div class="mcmds">movimento + edição, aleatório</div></button></div></div>';
   $('menu').innerHTML=h;
@@ -512,7 +513,8 @@ function msg(t){$('message').innerHTML=t;}
 
 function taskComplete(){
   if(arena){
-    arenaScore++;msg('⚡ +1! Total: '+arenaScore);
+    arenaScore++;arenaLeft+=ARENA_BONUS;
+    msg('⚡ +1 ponto e +'+ARENA_BONUS+'s! Total: '+arenaScore);
     loadTask();return;
   }
   if(taskIdx<taskTotal-1){
@@ -544,7 +546,7 @@ function nextArenaTask(){return pick(ARENA_GENS)();}
 function startArena(){
   arena=true;arenaScore=0;arenaLeft=ARENA_TIME;keys=0;
   $('menu').style.display='none';$('game').classList.add('on');hideOverlays();
-  $('goal').innerHTML='<b>🏟️ Arena:</b> desafios aleatórios sem parar. Complete o máximo que conseguir em '+ARENA_TIME+' segundos!';
+  $('goal').innerHTML='<b>🏟️ Arena:</b> desafios aleatórios sem parar. Você começa com '+ARENA_TIME+'s e cada desafio completado dá <b>+'+ARENA_BONUS+'s</b> — sobreviva o máximo que conseguir!';
   $('lvltitle').textContent='🏟️ Arena';
   $('cmds').innerHTML='<div class="cmd"><kbd>tudo</kbd><span>qualquer comando aprendido</span></div>';
   loadTask();

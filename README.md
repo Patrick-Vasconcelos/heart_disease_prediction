@@ -39,7 +39,7 @@ Abra o arquivo `index.html` em qualquer navegador (basta dar dois cliques) — n
 | 3.3 Desafio do Mestre | tudo junto, refatorações reais |
 
 ### 🏟️ Arena
-Drills aleatórios (movimento + edição) contra o relógio: 60 segundos para completar o máximo de desafios. O recorde fica salvo.
+Drills aleatórios (movimento + edição) contra o relógio: você começa com 60 segundos e cada desafio completado adiciona +5s ao cronômetro — sobreviva o máximo que conseguir. O recorde fica salvo.
 
 ## Desenvolvimento
 
